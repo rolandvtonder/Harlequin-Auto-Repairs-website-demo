@@ -26,3 +26,11 @@ npm run lint       # type check
 3. Deploy the `dist/` folder to any static host (Netlify, Cloudflare Pages, Vercel).
 4. Add the site in Google Search Console and submit `/sitemap-index.xml`.
 5. Put the website link on the Google Business Profile and the Facebook page.
+
+## Demo on GitHub Pages
+
+Every push to `main` builds the site into the repo's sub-folder
+(`https://rolandvtonder.github.io/Harlequin-Auto-Repairs-website-demo/`) via
+`.github/workflows/deploy.yml`. The demo copy is marked `noindex` so it never
+competes with the real domain. Internal links go through `link()` in
+`src/lib/url.ts`, which adds the sub-folder only when one is set.

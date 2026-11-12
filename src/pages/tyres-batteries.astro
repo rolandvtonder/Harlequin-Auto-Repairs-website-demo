@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import {Picture} from 'astro:assets';
 import sign from '../assets/free-fitting-balancing.jpg';
 import tyreWall from '../assets/tyre-wall.jpg';
@@ -22,16 +23,16 @@ const schema = [
     '@type': 'Service',
     name: 'Tyre sales, fitting & balancing',
     serviceType: 'Tyre shop',
-    url: new URL('/tyres-batteries/', Astro.site).href,
-    provider: {'@id': new URL('/#business', Astro.site).href},
+    url: new URL(link('/tyres-batteries/'), Astro.site).href,
+    provider: {'@id': new URL(link('/#business'), Astro.site).href},
     description: 'New tyres for cars, bakkies and SUVs with free fitting and balancing, plus puncture repairs, in Brackenhurst, Alberton.',
   },
   {
     '@type': 'Service',
     name: 'Car batteries',
     serviceType: 'Battery testing and replacement',
-    url: new URL('/tyres-batteries/', Astro.site).href,
-    provider: {'@id': new URL('/#business', Astro.site).href},
+    url: new URL(link('/tyres-batteries/'), Astro.site).href,
+    provider: {'@id': new URL(link('/#business'), Astro.site).href},
   },
   {
     '@type': 'FAQPage',

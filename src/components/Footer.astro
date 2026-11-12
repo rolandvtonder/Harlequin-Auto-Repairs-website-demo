@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import {business, fullAddress, hours, mapsUrl, nav, services, telHref, waHref} from '../data/site';
 import Icon from './Icon.astro';
 const year = new Date().getFullYear();
@@ -41,11 +42,11 @@ const year = new Date().getFullYear();
           {
             services.map((s) => (
               <li>
-                <a href={`/services/${s.slug}/`} class="text-white/85 hover:text-gold">{s.name}</a>
+                <a href={link(`/services/${s.slug}/`)} class="text-white/85 hover:text-gold">{s.name}</a>
               </li>
             ))
           }
-          <li><a href="/tyres-batteries/" class="text-white/85 hover:text-gold">Tyres &amp; Batteries</a></li>
+          <li><a href={link('/tyres-batteries/')} class="text-white/85 hover:text-gold">Tyres &amp; Batteries</a></li>
         </ul>
       </div>
       <div>
@@ -59,7 +60,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
     <nav aria-label="Footer" class="mt-14 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/15 pt-6">
-      {nav.map((n) => <a href={n.href} class="caps inline-flex min-h-11 items-center text-white/70 hover:text-white">{n.label}</a>)}
+      {nav.map((n) => <a href={link(n.href)} class="caps inline-flex min-h-11 items-center text-white/70 hover:text-white">{n.label}</a>)}
     </nav>
     <p class="mt-4 text-sm text-white/55">© {year} {business.legalName} · {fullAddress}</p>
   </div>

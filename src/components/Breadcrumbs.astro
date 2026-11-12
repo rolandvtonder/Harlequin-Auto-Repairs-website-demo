@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 interface Props {
   items: {name: string; href: string}[];
 }
@@ -15,7 +16,7 @@ const all = [{name: 'Home', href: '/'}, ...items];
           {i === all.length - 1 ? (
             <span aria-current="page" class="text-ink">{c.name}</span>
           ) : (
-            <a href={c.href} class="text-ink/65 hover:text-red">{c.name}</a>
+            <a href={link(c.href)} class="text-ink/65 hover:text-red">{c.name}</a>
           )}
         </li>
       ))

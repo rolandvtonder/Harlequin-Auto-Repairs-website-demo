@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import {getImage} from 'astro:assets';
 import wide from '../assets/workshop-lifts.jpg';
 import Icon from './Icon.astro';
@@ -45,7 +46,7 @@ const mobile = await getImage({src: wide, width: 1400, format: 'webp'});
             </h3>
             <div class="panel-copy max-w-[320px]">
               <p class="text-[16px] text-white/90">{p.text}</p>
-              <a href={p.href} class="caps mt-5 inline-flex min-h-11 items-center gap-3 border-b-2 border-red text-white hover:text-gold">
+              <a href={link(p.href)} class="caps mt-5 inline-flex min-h-11 items-center gap-3 border-b-2 border-red text-white hover:text-gold">
                 Learn more <span class="sr-only">about {p.title.join(' ')}</span>
                 <Icon name="arrow" size={16} />
               </a>

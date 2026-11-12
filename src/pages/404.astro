@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import Icon from '../components/Icon.astro';
 import Base from '../layouts/Base.astro';
 import {nav} from '../data/site';
@@ -16,7 +17,7 @@ import {nav} from '../data/site';
         {
           nav.map((n) => (
             <li>
-              <a href={n.href} class="caps inline-flex min-h-12 items-center gap-2 bg-ink px-5 text-white hover:bg-white hover:text-ink">
+              <a href={link(n.href)} class="caps inline-flex min-h-12 items-center gap-2 bg-ink px-5 text-white hover:bg-white hover:text-ink">
                 {n.label} <Icon name="arrow" size={14} />
               </a>
             </li>

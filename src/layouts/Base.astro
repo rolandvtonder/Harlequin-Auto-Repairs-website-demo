@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import '../styles/global.css';
 import {getImage} from 'astro:assets';
 import logoSrc from '../assets/logo.jpg';
@@ -23,10 +24,10 @@ const {title, description, ogImage = '/og-image.jpg', breadcrumbs, schema = [], 
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
 const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
-const ogUrl = new URL(ogImage, site).href;
+const ogUrl = new URL(link(ogImage), site).href;
 const logo = await getImage({src: logoSrc, width: 512, format: 'png'});
 const logoUrl = new URL(logo.src, site).href;
-const businessId = new URL('/#business', site).href;
+const businessId = new URL(link('/#business'), site).href;
 
 // The business itself, on every page, so whichever page Google lands on it
 // sees the same name, address, phone and hours.
@@ -35,7 +36,7 @@ const localBusiness = {
   '@id': businessId,
   name: business.name,
   alternateName: business.legalName,
-  url: new URL('/', site).href,
+  url: new URL(link('/'), site).href,
   logo: logoUrl,
   image: [ogUrl, logoUrl],
   telephone: business.phoneIntl,
@@ -59,8 +60,8 @@ const localBusiness = {
     '@type': 'OfferCatalog',
     name: 'Auto repair services',
     itemListElement: [
-      ...services.map((s) => ({'@type': 'Offer', itemOffered: {'@type': 'Service', name: s.name, url: new URL(`/services/${s.slug}/`, site).href}})),
-      {'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Tyres & Batteries', url: new URL('/tyres-batteries/', site).href}},
+      ...services.map((s) => ({'@type': 'Offer', itemOffered: {'@type': 'Service', name: s.name, url: new URL(link(`/services/${s.slug}/`), site).href}})),
+      {'@type': 'Offer', itemOffered: {'@type': 'Service', name: 'Tyres & Batteries', url: new URL(link('/tyres-batteries/'), site).href}},
     ],
   },
 };
@@ -69,8 +70,8 @@ const graph: Record<string, unknown>[] = [
   localBusiness,
   {
     '@type': 'WebSite',
-    '@id': new URL('/#website', site).href,
-    url: new URL('/', site).href,
+    '@id': new URL(link('/#website'), site).href,
+    url: new URL(link('/'), site).href,
     name: business.name,
     publisher: {'@id': businessId},
     inLanguage: 'en-ZA',
@@ -81,7 +82,7 @@ const graph: Record<string, unknown>[] = [
     url: canonical,
     name: fullTitle,
     description,
-    isPartOf: {'@id': new URL('/#website', site).href},
+    isPartOf: {'@id': new URL(link('/#website'), site).href},
     about: {'@id': businessId},
     inLanguage: 'en-ZA',
   },
@@ -94,7 +95,7 @@ if (breadcrumbs?.length) {
       '@type': 'ListItem',
       position: i + 1,
       name: b.name,
-      item: new URL(b.href, site).href,
+      item: new URL(link(b.href), site).href,
     })),
   });
 }
@@ -110,7 +111,7 @@ const jsonLd = JSON.stringify({'@context': 'https://schema.org', '@graph': graph
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    {noindex || import.meta.env.PUBLIC_DEMO ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
     <meta name="theme-color" content="#0c0b0e" />
     <meta name="geo.region" content="ZA-GP" />
     <meta name="geo.placename" content="Brackenhurst, Alberton" />
@@ -130,11 +131,11 @@ const jsonLd = JSON.stringify({'@context': 'https://schema.org', '@graph': graph
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogUrl} />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={link('/favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={link('/apple-touch-icon.png')} />
+    <link rel="manifest" href={link('/site.webmanifest')} />
+    <link rel="sitemap" href={link('/sitemap-index.xml')} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

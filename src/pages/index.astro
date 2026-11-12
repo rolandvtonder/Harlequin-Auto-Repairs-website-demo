@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import {Picture} from 'astro:assets';
 import heroImg from '../assets/mechanics-at-work.jpg';
 import forecourt from '../assets/totalenergies-forecourt.jpg';
@@ -70,7 +71,7 @@ const faqSchema = {
         <h2 id="services-title" class="display text-[clamp(48px,7vw,120px)]" data-reveal>
           <span class="block">Our</span><span class="it block text-gold">services</span>
         </h2>
-        <a href="/services/" class="caps inline-flex min-h-11 items-center gap-3 border-b-2 border-red hover:text-gold" data-reveal>
+        <a href={link('/services/')} class="caps inline-flex min-h-11 items-center gap-3 border-b-2 border-red hover:text-gold" data-reveal>
           All services <Icon name="arrow" size={16} />
         </a>
       </div>
@@ -78,7 +79,7 @@ const faqSchema = {
         {
           services.map((s, i) => (
             <li class="border-b border-white/15" data-reveal>
-              <a href={`/services/${s.slug}/`} class="group grid min-h-20 grid-cols-[3rem_1fr_auto] items-center gap-4 py-5 transition-colors hover:bg-red md:grid-cols-[5rem_1fr_1.2fr_auto] md:px-4">
+              <a href={link(`/services/${s.slug}/`)} class="group grid min-h-20 grid-cols-[3rem_1fr_auto] items-center gap-4 py-5 transition-colors hover:bg-red md:grid-cols-[5rem_1fr_1.2fr_auto] md:px-4">
                 <span class="caps text-white/55 group-hover:text-white">{String(i + 1).padStart(2, '0')}</span>
                 <span class="display text-[clamp(28px,3.2vw,52px)]">{s.name}</span>
                 <span class="hidden text-white/70 group-hover:text-white md:block">{s.includes.slice(0, 3).join(' · ')}</span>
@@ -88,7 +89,7 @@ const faqSchema = {
           ))
         }
         <li class="border-b border-white/15" data-reveal>
-          <a href="/tyres-batteries/" class="group grid min-h-20 grid-cols-[3rem_1fr_auto] items-center gap-4 py-5 transition-colors hover:bg-red md:grid-cols-[5rem_1fr_1.2fr_auto] md:px-4">
+          <a href={link('/tyres-batteries/')} class="group grid min-h-20 grid-cols-[3rem_1fr_auto] items-center gap-4 py-5 transition-colors hover:bg-red md:grid-cols-[5rem_1fr_1.2fr_auto] md:px-4">
             <span class="caps text-white/55 group-hover:text-white">{String(services.length + 1).padStart(2, '0')}</span>
             <span class="display text-[clamp(28px,3.2vw,52px)]">Tyres &amp; Batteries</span>
             <span class="hidden text-white/70 group-hover:text-white md:block">Free fitting &amp; balancing · Puncture repairs · Batteries</span>
@@ -135,7 +136,7 @@ const faqSchema = {
           <a href={mapsUrl} target="_blank" rel="noopener" class="caps inline-flex min-h-14 items-center gap-3 bg-ink px-7 text-white hover:bg-red">
             <Icon name="pin" size={18} /> Get directions
           </a>
-          <a href="/contact/" class="caps inline-flex min-h-14 items-center gap-3 border border-ink/30 px-7 hover:border-red hover:text-red">
+          <a href={link('/contact/')} class="caps inline-flex min-h-14 items-center gap-3 border border-ink/30 px-7 hover:border-red hover:text-red">
             Contact us <Icon name="arrow" size={16} />
           </a>
         </div>

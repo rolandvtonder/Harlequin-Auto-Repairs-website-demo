@@ -1,4 +1,5 @@
 ---
+import {link} from '../lib/url';
 import {Image} from 'astro:assets';
 import logo from '../assets/logo.jpg';
 import {business, telHref} from '../data/site';
@@ -6,7 +7,7 @@ import Icon from './Icon.astro';
 ---
 
 <header>
-  <a href="/" class="fixed top-4 left-4 z-[55] flex items-center gap-3 md:top-6 md:left-10" aria-label={`${business.name} — home`}>
+  <a href={link('/')} class="fixed top-4 left-4 z-[55] flex items-center gap-3 md:top-6 md:left-10" aria-label={`${business.name} — home`}>
     <Image src={logo} alt="" width={96} height={96} class="size-11 rounded-full border border-white/20 object-cover md:size-12" loading="eager" />
     <span class="display text-[24px] tracking-[0.14em] text-white mix-blend-difference max-[380px]:hidden">{business.short}</span>
   </a>
@@ -28,7 +29,7 @@ import Icon from './Icon.astro';
   <a href={telHref} class="flex size-14 items-center justify-center bg-ink text-white transition-colors hover:bg-red" aria-label={`Call ${business.phoneDisplay}`}>
     <Icon name="phone" size={20} />
   </a>
-  <a href="/contact/#book" class="caps flex min-h-14 items-center gap-3 bg-red px-7 text-white transition-colors duration-500 hover:bg-white hover:text-ink">
+  <a href={link('/contact/#book')} class="caps flex min-h-14 items-center gap-3 bg-red px-7 text-white transition-colors duration-500 hover:bg-white hover:text-ink">
     Book a <em class="font-display text-[15px] tracking-[0.06em] normal-case italic">service</em>
     <Icon name="arrow" size={16} />
   </a>
