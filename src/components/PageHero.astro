@@ -1,0 +1,56 @@
+---
+import type {ImageMetadata} from 'astro';
+import {Picture} from 'astro:assets';
+
+/**
+ * Full-height photo hero with the big condensed headline. As you scroll on,
+ * the photo blurs, dims and pulls back (driven from scripts/main.ts) — a
+ * camera move, not a fade. Italic lines are data: `{t, i: true}`.
+ */
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  eyebrow: string;
+  lines: {t: string; i?: boolean}[];
+  body: string;
+  /** Shorter hero for inner pages. */
+  compact?: boolean;
+  position?: string;
+}
+const {image, alt, eyebrow, lines, body, compact = false, position = 'center'} = Astro.props;
+---
+
+<section data-hero class:list={['relative overflow-hidden bg-ink', compact ? 'h-[88svh] min-h-[560px]' : 'h-svh min-h-[620px]']}>
+  <div data-hero-stage class="absolute inset-0 origin-center will-change-transform">
+    <Picture
+      src={image}
+      alt={alt}
+      widths={[640, 960, 1280, 1920, 2560]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      loading="eager"
+      fetchpriority="high"
+      class="hero-img absolute inset-0 h-full w-full object-cover"
+      style={`object-position:${position}`}
+    />
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(12_11_14/0.85),rgb(12_11_14/0.45)_45%,transparent_80%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(12_11_14/0.55),transparent_30%,transparent_70%,rgb(12_11_14/0.7))]"></div>
+
+    <div class="relative mx-auto flex h-full max-w-[1680px] flex-col justify-center-safe px-5 pt-28 pb-28 md:px-14 md:pt-32">
+      <p class="caps hero-fade mb-6 flex items-center gap-3 text-gold">
+        <span class="inline-block size-2.5 rotate-45 bg-red" aria-hidden="true"></span>{eyebrow}
+      </p>
+      <h1 class:list={['display text-white drop-shadow-[0_4px_30px_rgb(0_0_0/0.45)]', compact ? 'text-[clamp(50px,min(7.4vw,12svh),128px)]' : 'text-[clamp(54px,min(8vw,11svh),156px)]']}>
+        {
+          lines.map((l, i) => (
+            <span class:list={['hero-line', l.i && 'it text-gold', i === 0 && 'md:pl-[1.4em]']} style={`--i:${i}`}>
+              {l.t}
+            </span>
+          ))
+        }
+      </h1>
+      <p class="hero-fade mt-8 max-w-[440px] text-[17px] leading-relaxed text-white/90 md:ml-[clamp(0px,14vw,260px)]">{body}</p>
+      <slot />
+    </div>
+  </div>
+</section>

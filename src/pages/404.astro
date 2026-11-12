@@ -1,0 +1,28 @@
+---
+import Icon from '../components/Icon.astro';
+import Base from '../layouts/Base.astro';
+import {nav} from '../data/site';
+---
+
+<Base title="Page not found" description="This page could not be found. Head back to Harlequin Auto Repairs in Brackenhurst, Alberton." noindex>
+  <section class="diamonds relative z-10 flex min-h-svh items-center bg-red">
+    <div class="mx-auto w-full max-w-[1680px] px-5 py-32 md:px-14">
+      <p class="caps text-white/85">Error 404</p>
+      <h1 class="display mt-4 text-[clamp(60px,11vw,190px)]">
+        <span class="block">Wrong</span><span class="it block text-ink">turn.</span>
+      </h1>
+      <p class="mt-6 max-w-[460px] text-[18px]">That page has broken down. Try one of these instead:</p>
+      <ul class="mt-8 flex flex-wrap gap-[3px]">
+        {
+          nav.map((n) => (
+            <li>
+              <a href={n.href} class="caps inline-flex min-h-12 items-center gap-2 bg-ink px-5 text-white hover:bg-white hover:text-ink">
+                {n.label} <Icon name="arrow" size={14} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,159 @@
+---
+import forecourt from '../assets/totalenergies-forecourt.jpg';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import Base from '../layouts/Base.astro';
+import {business, fullAddress, hours, mapsEmbed, mapsUrl, services, telHref, waHref} from '../data/site';
+
+const crumbs = [{name: 'Contact', href: '/contact/'}];
+const today = new Date().toISOString().slice(0, 10);
+const contactSchema = {
+  '@type': 'ContactPage',
+  name: 'Contact Harlequin Auto Repairs',
+  url: new URL('/contact/', Astro.site).href,
+  mainEntity: {'@id': new URL('/#business', Astro.site).href},
+};
+const input =
+  'mt-2 block min-h-12 w-full border border-ink/25 bg-white px-4 text-[16px] text-ink placeholder:text-ink/45 focus:border-ink focus:outline-none focus-visible:outline-3 focus-visible:outline-gold aria-[invalid=true]:border-red';
+---
+
+<Base
+  title="Contact & Book a Service"
+  description="Book your car in at Harlequin Auto Repairs, 04 Kalkoentjie St, Brackenhurst, Alberton. Call or WhatsApp 078 555 3354. Mon–Fri 08:00–17:00, Sat 08:00–12:00."
+  breadcrumbs={crumbs}
+  schema={[contactSchema]}
+>
+  <PageHero
+    compact
+    image={forecourt}
+    alt="The TotalEnergies forecourt in Brackenhurst where Harlequin Auto Repairs is based"
+    eyebrow="Contact"
+    lines={[{t: 'Book your'}, {t: 'car in.', i: true}]}
+    body="Call, WhatsApp or send a booking request below. We will confirm a time and give you a quote."
+  />
+  <Breadcrumbs items={crumbs} />
+
+  <section class="relative z-10 bg-paper text-ink" aria-labelledby="contact-ways">
+    <div class="mx-auto max-w-[1680px] px-5 py-20 md:px-14 md:py-24">
+      <h2 id="contact-ways" class="sr-only">Ways to reach us</h2>
+      <ul class="grid gap-[3px] sm:grid-cols-2 lg:grid-cols-4">
+        <li data-reveal>
+          <a href={telHref} class="group flex h-full min-h-44 flex-col justify-between bg-ink p-7 text-white hover:bg-red">
+            <Icon name="phone" size={26} class="text-gold group-hover:text-white" />
+            <span><span class="caps block text-white/70">Call</span><span class="display mt-1 block text-[34px]">{business.phoneDisplay}</span></span>
+          </a>
+        </li>
+        <li data-reveal style="--i:1">
+          <a href={waHref()} target="_blank" rel="noopener" class="group flex h-full min-h-44 flex-col justify-between bg-white p-7 hover:bg-ink hover:text-white">
+            <Icon name="whatsapp" size={26} class="text-red group-hover:text-gold" />
+            <span><span class="caps block text-ink/65 group-hover:text-white/70">WhatsApp</span><span class="display mt-1 block text-[34px]">Message us</span></span>
+          </a>
+        </li>
+        <li data-reveal style="--i:2">
+          <a href={`mailto:${business.email}`} class="group flex h-full min-h-44 flex-col justify-between bg-white p-7 hover:bg-ink hover:text-white">
+            <Icon name="mail" size={26} class="text-red group-hover:text-gold" />
+            <span><span class="caps block text-ink/65 group-hover:text-white/70">Email</span><span class="mt-1 block text-[17px] font-semibold break-all">{business.email}</span></span>
+          </a>
+        </li>
+        <li data-reveal style="--i:3">
+          <a href={mapsUrl} target="_blank" rel="noopener" class="group flex h-full min-h-44 flex-col justify-between bg-white p-7 hover:bg-ink hover:text-white">
+            <Icon name="pin" size={26} class="text-red group-hover:text-gold" />
+            <span><span class="caps block text-ink/65 group-hover:text-white/70">Visit</span><span class="mt-1 block text-[17px] font-semibold">{fullAddress}</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="book" class="relative z-10 scroll-mt-6 bg-ink" aria-labelledby="book-title">
+    <div class="mx-auto grid max-w-[1680px] gap-14 px-5 py-20 md:px-14 md:py-28 lg:grid-cols-[1fr_1.4fr]">
+      <div>
+        <h2 id="book-title" class="display text-[clamp(48px,6vw,104px)]" data-reveal>
+          <span class="block">Booking</span><span class="it block text-gold">request</span>
+        </h2>
+        <p class="mt-6 max-w-[420px] text-[17px] text-white/85" data-reveal>
+          Fill this in and press send. WhatsApp opens with your booking message ready to go, so we get all the details in one go and can reply quickly.
+        </p>
+        <div class="mt-10 max-w-[420px]" data-reveal>
+          <h3 class="caps text-gold">Opening hours</h3>
+          <dl class="mt-4 space-y-2">
+            {
+              hours.map((h) => (
+                <div class="flex justify-between gap-4 border-b border-white/15 pb-2">
+                  <dt class="text-white/85">{h.days}</dt>
+                  <dd class="font-semibold">{h.opens ? `${h.opens} – ${h.closes}` : 'Closed'}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <p class="caps mt-4 text-white/70 data-[state=open]:text-gold" data-open-status hidden></p>
+        </div>
+      </div>
+
+      <form data-booking data-whatsapp={business.whatsapp} novalidate class="bg-paper p-6 text-ink sm:p-10" data-reveal style="--i:1" aria-describedby="form-note">
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label for="f-name" class="font-semibold">Your name <span class="text-red" aria-hidden="true">*</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required class={input} data-error="Please tell us your name." aria-describedby="f-name-error" />
+            <p id="f-name-error" class="mt-1.5 min-h-5 text-sm font-semibold text-red" aria-live="polite"></p>
+          </div>
+          <div>
+            <label for="f-phone" class="font-semibold">Phone number <span class="text-red" aria-hidden="true">*</span></label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required pattern="[0-9 +()\-]{9,}" placeholder="e.g. 082 123 4567" class={input} data-error="Please enter a phone number we can reach you on." aria-describedby="f-phone-error" />
+            <p id="f-phone-error" class="mt-1.5 min-h-5 text-sm font-semibold text-red" aria-live="polite"></p>
+          </div>
+          <div>
+            <label for="f-vehicle" class="font-semibold">Vehicle <span class="text-red" aria-hidden="true">*</span></label>
+            <input id="f-vehicle" name="vehicle" type="text" required placeholder="Make, model and year" class={input} data-error="Please tell us the make and model." aria-describedby="f-vehicle-error" />
+            <p id="f-vehicle-error" class="mt-1.5 min-h-5 text-sm font-semibold text-red" aria-live="polite"></p>
+          </div>
+          <div>
+            <label for="f-service" class="font-semibold">Service needed <span class="text-red" aria-hidden="true">*</span></label>
+            <select id="f-service" name="service" required class={input} data-error="Please choose a service." aria-describedby="f-service-error">
+              <option value="">Choose a service</option>
+              {services.map((s) => <option>{s.name}</option>)}
+              <option>Tyres</option>
+              <option>Battery</option>
+              <option>Not sure, please check it</option>
+            </select>
+            <p id="f-service-error" class="mt-1.5 min-h-5 text-sm font-semibold text-red" aria-live="polite"></p>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="f-date" class="font-semibold">Preferred day <span class="font-normal text-ink/65">(optional)</span></label>
+            <input id="f-date" name="date" type="date" min={today} class={input} data-error="Please choose a day from today onwards." aria-describedby="f-date-help f-date-error" />
+            <p id="f-date-help" class="mt-1.5 text-sm text-ink/70">We are open Monday to Saturday. We will confirm the exact time.</p>
+            <p id="f-date-error" class="min-h-5 text-sm font-semibold text-red" aria-live="polite"></p>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="f-message" class="font-semibold">What is going on? <span class="font-normal text-ink/65">(optional)</span></label>
+            <textarea id="f-message" name="message" rows="4" placeholder="Noises, warning lights, when it started…" class={`${input} py-3`}></textarea>
+          </div>
+        </div>
+        <button type="submit" class="caps mt-8 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-red px-8 text-white hover:bg-ink sm:w-auto">
+          <Icon name="whatsapp" size={18} /> Send via WhatsApp
+        </button>
+        <p id="form-note" class="mt-4 text-sm text-ink/70">Fields marked <span class="text-red">*</span> are required. Nothing is stored on this website; your message goes straight to our WhatsApp.</p>
+        <p data-status class="mt-2 text-sm font-semibold text-ink" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="relative z-10 bg-paper text-ink" aria-labelledby="map-title">
+    <div class="mx-auto max-w-[1680px] px-5 py-20 md:px-14 md:py-24">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 id="map-title" class="display text-[clamp(40px,5vw,84px)]">Find the workshop</h2>
+        <p class="max-w-[460px] text-ink/80">{business.address.landmark}.</p>
+      </div>
+      <div class="mt-8 aspect-[4/3] w-full overflow-hidden bg-ink/10 md:aspect-[21/9]">
+        <iframe
+          title={`Map showing ${business.name} at ${fullAddress}`}
+          src={mapsEmbed}
+          class="h-full w-full border-0 grayscale-[0.4]"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <a href={mapsUrl} target="_blank" rel="noopener" class="caps mt-6 inline-flex min-h-14 items-center gap-3 bg-ink px-7 text-white hover:bg-red"><Icon name="pin" size={18} /> Open in Google Maps</a>
+    </div>
+  </section>
+</Base>

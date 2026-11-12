@@ -1,0 +1,101 @@
+---
+import {Picture} from 'astro:assets';
+import sign from '../assets/free-fitting-balancing.jpg';
+import tyreWall from '../assets/tyre-wall.jpg';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import Base from '../layouts/Base.astro';
+import {business, tyreServices, waHref} from '../data/site';
+
+const crumbs = [{name: 'Tyres & Batteries', href: '/tyres-batteries/'}];
+const faqs = [
+  {q: 'Is tyre fitting really free?', a: 'Yes. Fitting and balancing are free on tyres you buy from us.'},
+  {q: 'Do you have my tyre size in stock?', a: `We keep a large range of popular sizes on the wall. WhatsApp us your tyre size (it is printed on the side of the tyre, for example 185/65R15) on ${business.phoneDisplay} and we will confirm stock and price.`},
+  {q: 'Can you fix a puncture?', a: 'Most punctures in the tread can be repaired safely. Damage to the sidewall cannot, and we will tell you honestly if the tyre needs replacing.'},
+  {q: 'How do I know my battery is dying?', a: 'Slow cranking, dim lights at start-up and a battery warning light are the usual signs. We can test your battery and charging system in a few minutes.'},
+];
+const schema = [
+  {
+    '@type': 'Service',
+    name: 'Tyre sales, fitting & balancing',
+    serviceType: 'Tyre shop',
+    url: new URL('/tyres-batteries/', Astro.site).href,
+    provider: {'@id': new URL('/#business', Astro.site).href},
+    description: 'New tyres for cars, bakkies and SUVs with free fitting and balancing, plus puncture repairs, in Brackenhurst, Alberton.',
+  },
+  {
+    '@type': 'Service',
+    name: 'Car batteries',
+    serviceType: 'Battery testing and replacement',
+    url: new URL('/tyres-batteries/', Astro.site).href,
+    provider: {'@id': new URL('/#business', Astro.site).href},
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({'@type': 'Question', name: f.q, acceptedAnswer: {'@type': 'Answer', text: f.a}})),
+  },
+];
+---
+
+<Base
+  title="Tyres & Batteries in Alberton"
+  description="New tyres with free fitting & balancing, puncture repairs and car batteries in Brackenhurst, Alberton. WhatsApp your tyre size to 078 555 3354."
+  breadcrumbs={crumbs}
+  schema={schema}
+>
+  <PageHero
+    compact
+    image={tyreWall}
+    alt="A long wall of new tyres in stock at Harlequin Auto Repairs"
+    eyebrow="Tyres & Batteries"
+    lines={[{t: 'Tyres fitted.'}, {t: 'Balanced.', i: true}, {t: 'Free.', i: true}]}
+    body="A full wall of new tyres in stock, with free fitting and balancing. Batteries tested and fitted while you wait."
+    position="30% center"
+  />
+  <Breadcrumbs items={crumbs} />
+
+  <section class="relative z-10 bg-paper text-ink" aria-labelledby="tyres-title">
+    <div class="mx-auto grid max-w-[1680px] gap-14 px-5 py-20 md:grid-cols-2 md:items-center md:px-14 md:py-28">
+      <div>
+        <p class="caps text-red" data-reveal>Tyres</p>
+        <h2 id="tyres-title" class="display mt-4 text-[clamp(44px,5.4vw,92px)]" data-reveal>
+          <span class="block">Free fitting</span><span class="it block text-red">&amp; balancing</span>
+        </h2>
+        <p class="mt-6 max-w-[520px] text-[18px] text-ink/85" data-reveal>
+          Buy your tyres from us and we fit and balance them for free. We stock popular sizes for hatchbacks, sedans, bakkies and SUVs, and we will check your wheel alignment wear while the car is in.
+        </p>
+        <ul class="mt-8 space-y-3" data-reveal>
+          {tyreServices.tyres.map((t) => <li class="flex gap-3"><Icon name="check" size={20} class="mt-0.5 text-red" /><span>{t}</span></li>)}
+        </ul>
+        <a href={waHref('Hi Harlequin Auto Repairs, please quote me on tyres. My tyre size is: ')} target="_blank" rel="noopener" class="caps mt-10 inline-flex min-h-14 items-center gap-3 bg-ink px-7 text-white hover:bg-red" data-reveal>
+          <Icon name="whatsapp" size={18} /> WhatsApp your tyre size
+        </a>
+      </div>
+      <div class="relative aspect-[4/5] overflow-hidden md:aspect-[4/3]" data-reveal>
+        <Picture src={sign} alt="Free Fitting & Balancing sign outside Harlequin Auto Repairs on the TotalEnergies forecourt" widths={[640, 960, 1400]} sizes="(min-width: 768px) 50vw, 100vw" formats={['avif', 'webp']} class="h-full w-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <section class="relative z-10 bg-navy" aria-labelledby="battery-title">
+    <div class="mx-auto grid max-w-[1680px] gap-14 px-5 py-20 md:grid-cols-[1fr_1.2fr] md:px-14 md:py-28">
+      <h2 id="battery-title" class="display text-[clamp(48px,6.4vw,110px)]" data-reveal>
+        <span class="block">Flat</span><span class="it block text-gold">battery?</span>
+      </h2>
+      <div data-reveal style="--i:1">
+        <p class="max-w-[560px] text-[18px] text-white/90">
+          We test your battery and charging system, then supply and fit the right battery for your car. If the battery is fine, we will look at the alternator and wiring so you are not caught out again.
+        </p>
+        <ul class="mt-8 grid gap-[3px] sm:grid-cols-2">
+          {tyreServices.batteries.map((b) => <li class="flex min-h-20 items-center gap-3 bg-ink/50 p-5"><span class="inline-block size-2.5 shrink-0 rotate-45 bg-red" aria-hidden="true"></span>{b}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Faq faqs={faqs} title="Tyre & battery questions" />
+  <CtaBand title={[{t: 'Need tyres'}, {t: 'today?', i: true}]} text="Send us your tyre size on WhatsApp and we will confirm stock and price straight away." />
+</Base>

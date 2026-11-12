@@ -1,0 +1,35 @@
+---
+import {Image} from 'astro:assets';
+import logo from '../assets/logo.jpg';
+import {business, telHref} from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<header>
+  <a href="/" class="fixed top-4 left-4 z-[55] flex items-center gap-3 md:top-6 md:left-10" aria-label={`${business.name} — home`}>
+    <Image src={logo} alt="" width={96} height={96} class="size-11 rounded-full border border-white/20 object-cover md:size-12" loading="eager" />
+    <span class="display text-[24px] tracking-[0.14em] text-white mix-blend-difference max-[380px]:hidden">{business.short}</span>
+  </a>
+
+  <button
+    type="button"
+    data-menu-toggle
+    aria-expanded="false"
+    aria-controls="site-menu"
+    aria-label="Open menu"
+    class="caps group fixed top-4 right-4 z-[55] flex min-h-12 items-center gap-4 bg-ink/70 px-6 text-white backdrop-blur-md transition-colors duration-500 hover:bg-red md:top-6 md:right-8 [.menu-open_&]:bg-ink"
+  >
+    <span data-menu-label>Menu</span>
+    <Icon name="plus" size={18} class="transition-transform duration-500 ease-silk [.menu-open_&]:rotate-45" />
+  </button>
+</header>
+
+<div class="fixed right-4 bottom-4 z-[45] flex gap-[3px] md:right-8 md:bottom-6">
+  <a href={telHref} class="flex size-14 items-center justify-center bg-ink text-white transition-colors hover:bg-red" aria-label={`Call ${business.phoneDisplay}`}>
+    <Icon name="phone" size={20} />
+  </a>
+  <a href="/contact/#book" class="caps flex min-h-14 items-center gap-3 bg-red px-7 text-white transition-colors duration-500 hover:bg-white hover:text-ink">
+    Book a <em class="font-display text-[15px] tracking-[0.06em] normal-case italic">service</em>
+    <Icon name="arrow" size={16} />
+  </a>
+</div>

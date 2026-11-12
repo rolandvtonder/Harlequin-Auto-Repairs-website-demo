@@ -1,0 +1,78 @@
+---
+import {getImage, Picture} from 'astro:assets';
+import sign from '../assets/free-fitting-balancing.jpg';
+import mechanics from '../assets/mechanics-at-work.jpg';
+import forecourt from '../assets/totalenergies-forecourt.jpg';
+import tyres from '../assets/tyre-wall.jpg';
+import lifts from '../assets/workshop-lifts.jpg';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import Base from '../layouts/Base.astro';
+
+const crumbs = [{name: 'Gallery', href: '/gallery/'}];
+const photos = [
+  {src: lifts, alt: 'Two cars raised on hydraulic lifts in the Harlequin Auto Repairs workshop', caption: 'The workshop floor', span: 'md:col-span-2'},
+  {src: mechanics, alt: 'Two mechanics inspecting the front suspension of a raised car', caption: 'Suspension check on the lift', span: ''},
+  {src: tyres, alt: 'Two long racks of new tyres in stock', caption: 'The tyre wall', span: ''},
+  {src: forecourt, alt: 'The TotalEnergies forecourt in Brackenhurst with the Harlequin sign, next to Checkers', caption: 'Find us on the TotalEnergies forecourt', span: 'md:col-span-2'},
+  {src: sign, alt: 'Free Fitting & Balancing sign with the Harlequin Auto Repairs billboard behind it', caption: 'Free fitting & balancing', span: 'md:col-span-3'},
+];
+const full = await Promise.all(photos.map((p) => getImage({src: p.src, width: 2000, format: 'webp'})));
+const gallerySchema = {
+  '@type': 'ImageGallery',
+  name: 'Harlequin Auto Repairs workshop gallery',
+  image: full.map((f, i) => ({'@type': 'ImageObject', contentUrl: new URL(f.src, Astro.site).href, caption: photos[i].caption, description: photos[i].alt})),
+};
+---
+
+<Base
+  title="Workshop Gallery"
+  description="Photos from inside Harlequin Auto Repairs in Brackenhurst, Alberton: the workshop floor, lifts, tyre wall and our spot on the TotalEnergies forecourt."
+  breadcrumbs={crumbs}
+  schema={[gallerySchema]}
+>
+  <PageHero compact image={lifts} alt="Inside the Harlequin Auto Repairs workshop" eyebrow="Gallery" lines={[{t: 'Inside the'}, {t: 'workshop.', i: true}]} body="Take a look around: the lifts, the benches, the tyre wall and where to find us." />
+  <Breadcrumbs items={crumbs} />
+
+  <section class="relative z-10 bg-paper text-ink" aria-labelledby="photos">
+    <div class="mx-auto max-w-[1680px] px-5 py-20 md:px-14 md:py-28">
+      <h2 id="photos" class="display text-[clamp(40px,5vw,84px)]" data-reveal>Photos</h2>
+      <ul class="mt-10 grid gap-[3px] md:grid-cols-3">
+        {
+          photos.map((p, i) => (
+            <li class={p.span} data-reveal style={`--i:${i % 3}`}>
+              <figure>
+                <button
+                  type="button"
+                  data-lightbox
+                  data-full={full[i].src}
+                  data-alt={p.alt}
+                  data-caption={p.caption}
+                  class="group relative block aspect-[16/10] w-full overflow-hidden bg-ink"
+                  aria-label={`Open photo: ${p.caption}`}
+                >
+                  <Picture src={p.src} alt={p.alt} widths={[640, 960, 1400]} sizes="(min-width: 768px) 66vw, 100vw" formats={['avif', 'webp']} class="h-full w-full object-cover transition-transform duration-700 ease-silk group-hover:scale-105" />
+                </button>
+                <figcaption class="caps mt-3 mb-4 text-ink/70">{p.caption}</figcaption>
+              </figure>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <dialog class="lightbox m-auto max-h-none max-w-none bg-transparent p-0 text-white" aria-label="Photo viewer">
+    <figure class="flex h-svh w-screen flex-col items-center justify-center gap-4 p-4 md:p-10">
+      <img src="" alt="" class="max-h-[80svh] w-auto max-w-full object-contain" />
+      <figcaption class="caps text-white/85"></figcaption>
+    </figure>
+    <button type="button" data-close class="fixed top-4 right-4 flex size-12 items-center justify-center bg-white text-ink hover:bg-gold" aria-label="Close photo"><Icon name="x" /></button>
+    <button type="button" data-prev class="fixed top-1/2 left-3 flex size-12 -translate-y-1/2 items-center justify-center bg-ink/80 hover:bg-red" aria-label="Previous photo"><Icon name="chevron-left" /></button>
+    <button type="button" data-next class="fixed top-1/2 right-3 flex size-12 -translate-y-1/2 items-center justify-center bg-ink/80 hover:bg-red" aria-label="Next photo"><Icon name="chevron-right" /></button>
+  </dialog>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,31 @@
+---
+import {business, telHref, waHref} from '../data/site';
+import Icon from './Icon.astro';
+interface Props {
+  title?: {t: string; i?: boolean}[];
+  text?: string;
+}
+const {
+  title = [{t: 'Car making'}, {t: 'a funny noise?', i: true}],
+  text = 'Call or WhatsApp us and tell us what is going on. We will tell you what it probably is and when we can see it.',
+} = Astro.props;
+---
+
+<section class="diamonds relative z-10 overflow-hidden bg-red text-white">
+  <div class="mx-auto grid max-w-[1680px] gap-10 px-5 py-20 md:grid-cols-[1.2fr_1fr] md:items-end md:px-14 md:py-28">
+    <h2 class="display text-[clamp(48px,7vw,120px)]" data-reveal>
+      {title.map((l) => <span class:list={['block', l.i && 'it text-ink']}>{l.t}</span>)}
+    </h2>
+    <div data-reveal style="--i:1">
+      <p class="max-w-[420px] text-[17px] text-white/95">{text}</p>
+      <div class="mt-8 flex flex-wrap gap-[3px]">
+        <a href={telHref} class="caps inline-flex min-h-14 items-center gap-3 bg-ink px-7 text-white hover:bg-white hover:text-ink">
+          <Icon name="phone" size={18} /> {business.phoneDisplay}
+        </a>
+        <a href={waHref()} target="_blank" rel="noopener" class="caps inline-flex min-h-14 items-center gap-3 bg-white px-7 text-ink hover:bg-gold">
+          <Icon name="whatsapp" size={18} /> WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

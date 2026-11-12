@@ -1,0 +1,59 @@
+---
+import {business, nav, telHref, waHref} from '../data/site';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<!--
+  The menu: three slabs wipe in from the right one after another (ink, red,
+  paper); the paper one stays and holds the items. Closing runs the reverse,
+  faster. `inert` keeps the hidden links out of the tab order.
+-->
+<div class="menu fixed inset-0 z-50" data-menu inert id="site-menu">
+  <svg class="absolute size-0" aria-hidden="true" focusable="false">
+    <filter id="ripple" x="-5%" y="-30%" width="110%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="2" seed="2" result="n"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </svg>
+
+  <div class="menu-scrim absolute inset-0 bg-ink/50 backdrop-blur-[2px]" data-menu-close aria-hidden="true"></div>
+
+  <div class="slab bg-ink" style="--open:0s;--close:0.12s" aria-hidden="true"></div>
+  <div class="slab diamonds bg-red" style="--open:0.09s;--close:0.06s" aria-hidden="true"></div>
+  <nav class="slab flex flex-col justify-between overflow-y-auto bg-paper px-8 pt-24 pb-8 text-ink md:px-10" style="--open:0.18s;--close:0s" aria-label="Main menu">
+    <ul class="menu-links pr-8">
+      {
+        nav.map((item, i) => (
+          <li class="menu-item" style={`--i:${i}`}>
+            <a
+              href={item.href}
+              class="menu-link display relative inline-block py-1 text-[clamp(34px,min(3.8vw,6.2svh),58px)] transition-opacity duration-300"
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {isCurrent(item.href) ? <em>{item.label}</em> : item.label}
+              <sup class="caps absolute top-2 -right-7 text-[10px] tracking-normal text-ink/55">0{i + 1}</sup>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="menu-foot mt-10 space-y-5">
+      <div>
+        <p class="caps text-ink/60">Call or WhatsApp</p>
+        <a href={telHref} class="display mt-1 inline-block text-3xl hover:text-red">{business.phoneDisplay}</a>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href={waHref()} target="_blank" rel="noopener" class="caps inline-flex min-h-11 items-center gap-2 bg-ink px-4 text-white hover:bg-red">
+          <Icon name="whatsapp" size={16} /> WhatsApp
+        </a>
+        <a href={business.facebook} target="_blank" rel="noopener" class="caps inline-flex min-h-11 items-center gap-2 border border-ink/25 px-4 hover:border-red hover:text-red">
+          <Icon name="facebook" size={16} /> Facebook
+        </a>
+      </div>
+      <p class="text-sm text-ink/70">Mon–Fri 08:00–17:00 · Sat 08:00–12:00</p>
+    </div>
+  </nav>
+</div>

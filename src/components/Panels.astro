@@ -1,0 +1,59 @@
+---
+import {getImage} from 'astro:assets';
+import wide from '../assets/workshop-lifts.jpg';
+import Icon from './Icon.astro';
+
+/**
+ * Three tall panels slide in from the right one after another, each showing
+ * its own third of ONE wide photo of the workshop — one download, and the
+ * three slices can never drift apart. The image is three panels wide and
+ * shifted per panel.
+ */
+const panels = [
+  {title: ['Diagnostics', '& engine'], text: 'Fault codes read, causes found, engines and gearboxes repaired.', href: '/services/vehicle-diagnostics/', tint: '#0c0b0e'},
+  {title: ['Brakes', '& suspension'], text: 'Pads, discs, shocks, CV joints and bearings on all makes.', href: '/services/brakes/', tint: '#c8142c'},
+  {title: ['Tyres', '& batteries'], text: 'A full tyre wall in stock, with free fitting and balancing.', href: '/tyres-batteries/', tint: '#1b2347'},
+];
+const avif = await getImage({src: wide, width: 2560, format: 'avif'});
+const webp = await getImage({src: wide, width: 2560, format: 'webp'});
+const mobile = await getImage({src: wide, width: 1400, format: 'webp'});
+---
+
+<section class="panels relative z-10 overflow-hidden bg-ink" aria-labelledby="panels-title">
+  <h2 id="panels-title" class="sr-only">What we do</h2>
+  <div class="grid h-svh min-h-[640px] grid-cols-3 gap-[3px] max-md:h-auto max-md:grid-cols-1">
+    {
+      panels.map((p, i) => (
+        <article class="panel group relative overflow-hidden max-md:h-[78svh]" style={`--i:${i};background:${p.tint}`}>
+          <picture>
+            <source srcset={avif.src} type="image/avif" media="(min-width: 768px)" />
+            <source srcset={webp.src} type="image/webp" media="(min-width: 768px)" />
+            <img
+              src={mobile.src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="absolute top-0 h-full max-w-none object-cover transition-transform duration-[1.6s] ease-silk group-hover:scale-[1.03]"
+              style={`width:300%;left:${-100 * i}%`}
+            />
+          </picture>
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(12_11_14/0.7),transparent_40%,transparent_55%,rgb(12_11_14/0.85))]" />
+          <div class="relative flex h-full flex-col justify-between p-7 pt-24 md:p-9 md:pt-28">
+            <h3 class="display text-[clamp(40px,3.8vw,66px)] text-white">
+              <span class="block">{p.title[0]}</span>
+              <span class="it block text-gold">{p.title[1]}</span>
+            </h3>
+            <div class="panel-copy max-w-[320px]">
+              <p class="text-[16px] text-white/90">{p.text}</p>
+              <a href={p.href} class="caps mt-5 inline-flex min-h-11 items-center gap-3 border-b-2 border-red text-white hover:text-gold">
+                Learn more <span class="sr-only">about {p.title.join(' ')}</span>
+                <Icon name="arrow" size={16} />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+  <p class="sr-only">Photo: two cars on hydraulic lifts inside the Harlequin Auto Repairs workshop, with the tyre wall and tool benches behind.</p>
+</section>

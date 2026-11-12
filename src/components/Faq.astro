@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  faqs: {q: string; a: string}[];
+  title?: string;
+  tone?: 'paper' | 'ink';
+}
+const {faqs, title = 'Questions', tone = 'paper'} = Astro.props;
+const dark = tone === 'ink';
+---
+
+<section class:list={['relative z-10', dark ? 'bg-coal text-white' : 'bg-paper text-ink']} aria-labelledby="faq-title">
+  <div class="mx-auto grid max-w-[1680px] gap-10 px-5 py-20 md:grid-cols-[1fr_2fr] md:px-14 md:py-28">
+    <h2 id="faq-title" class="display text-[clamp(44px,5vw,84px)]" data-reveal>{title}</h2>
+    <div class:list={['border-t', dark ? 'border-white/20' : 'border-ink/20']}>
+      {
+        faqs.map((f, i) => (
+          <details class:list={['group border-b', dark ? 'border-white/20' : 'border-ink/20']} data-reveal style={`--i:${i}`}>
+            <summary class="flex min-h-16 items-center justify-between gap-6 py-4">
+              <h3 class="font-display text-[22px] font-semibold uppercase leading-tight md:text-[26px]">{f.q}</h3>
+              <span class:list={['faq-plus flex size-10 shrink-0 items-center justify-center transition-transform duration-300', dark ? 'bg-white/10' : 'bg-ink/5']}>
+                <Icon name="plus" size={18} />
+              </span>
+            </summary>
+            <p class:list={['max-w-[680px] pb-6 text-[17px]', dark ? 'text-white/80' : 'text-ink/80']}>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

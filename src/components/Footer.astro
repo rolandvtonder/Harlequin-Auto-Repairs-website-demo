@@ -1,0 +1,66 @@
+---
+import {business, fullAddress, hours, mapsUrl, nav, services, telHref, waHref} from '../data/site';
+import Icon from './Icon.astro';
+const year = new Date().getFullYear();
+---
+
+<footer class="relative z-10 bg-ink pt-20 pb-28 text-white md:pb-12">
+  <div class="mx-auto max-w-[1680px] px-5 md:px-14">
+    <p class="display text-[clamp(56px,13vw,220px)] leading-[0.82] text-white/95" aria-hidden="true">
+      Harlequin<span class="text-red">.</span>
+    </p>
+    <div class="mt-14 grid gap-12 border-t border-white/15 pt-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <h2 class="caps text-gold">Visit the workshop</h2>
+        <address class="mt-4 not-italic text-white/85">
+          <strong class="font-semibold text-white">{business.legalName}</strong><br />
+          {business.address.street}<br />
+          {business.address.suburb}, {business.address.city}, {business.address.postcode}<br />
+          {business.address.region}, South Africa
+        </address>
+        <a href={mapsUrl} target="_blank" rel="noopener" class="caps mt-4 inline-flex min-h-11 items-center gap-2 text-white hover:text-gold">
+          <Icon name="pin" size={16} /> Get directions
+        </a>
+      </div>
+      <div>
+        <h2 class="caps text-gold">Opening hours</h2>
+        <dl class="mt-4 space-y-2 text-white/85">
+          {
+            hours.map((h) => (
+              <div class="flex justify-between gap-4 border-b border-white/10 pb-2">
+                <dt>{h.days}</dt>
+                <dd class="text-white">{h.opens ? `${h.opens}–${h.closes}` : 'Closed'}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div>
+        <h2 class="caps text-gold">Services</h2>
+        <ul class="mt-4 space-y-1.5">
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}/`} class="text-white/85 hover:text-gold">{s.name}</a>
+              </li>
+            ))
+          }
+          <li><a href="/tyres-batteries/" class="text-white/85 hover:text-gold">Tyres &amp; Batteries</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="caps text-gold">Get in touch</h2>
+        <ul class="mt-4 space-y-3">
+          <li><a href={telHref} class="inline-flex min-h-11 items-center gap-3 hover:text-gold"><Icon name="phone" size={18} /> {business.phoneDisplay}</a></li>
+          <li><a href={waHref()} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-3 hover:text-gold"><Icon name="whatsapp" size={18} /> WhatsApp us</a></li>
+          <li><a href={`mailto:${business.email}`} class="inline-flex min-h-11 items-center gap-3 break-all hover:text-gold"><Icon name="mail" size={18} /> {business.email}</a></li>
+          <li><a href={business.facebook} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-3 hover:text-gold"><Icon name="facebook" size={18} /> Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <nav aria-label="Footer" class="mt-14 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/15 pt-6">
+      {nav.map((n) => <a href={n.href} class="caps inline-flex min-h-11 items-center text-white/70 hover:text-white">{n.label}</a>)}
+    </nav>
+    <p class="mt-4 text-sm text-white/55">© {year} {business.legalName} · {fullAddress}</p>
+  </div>
+</footer>
